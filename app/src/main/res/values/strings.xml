@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">TramWatch</string>
+    <string name="main_menu_name">TramWatch - Menu Główne</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Otwórz pasek menu</string>
+    <string name="navigation_drawer_close">Zamknij pasek menu</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_section_1_find_public_transport">Wyszukaj środek transportu z najbliższych przystanków</string>
+    <string name="title_section_2_set_notafications">Ustaw powiadomienia</string>
+    <string name="title_section_3_about">O aplikacji</string>
 
-    <string name="action_example">Example action</string>
+    <string name="find_public_transport_title">Odjazdy</string>
+    <string name="refresh_data_action_description">Odswież dane</string>
+    <string name="refresh_data_alert">Odświeżanie danych...</string>
 
     <string name="action_settings">Settings</string>
 </resources>

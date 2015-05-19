@@ -1,6 +1,7 @@
 package ute15l.tramwatch;
 
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -12,29 +13,61 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONObject;
+
+import java.util.Calendar;
 
 /**
  * Created by PAWEL on 2015-05-18.
  */
-public class FindPublicTransportFragment extends Fragment {
+public class FindPublicTransportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,LocationListener{
 
     public boolean isRefreshingData;
     private Menu menu;
     private MainActivity mainActivity;
-    private TextView opis;
+    private RefreshDataClockAsync refreshDataClockAsync;
+
+    private Location location;
+    private LocationRequest locationRequest;
+    private GoogleApiClient googleApiClient;
+
+    private Calendar calendar;
+    private long timeStampSinceLastUpdate = 0;
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         mainActivity = (MainActivity) getActivity();
+        calendar = Calendar.getInstance();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_find_public_transport, container, false);
-        opis = (TextView) view.findViewById(R.id.texts);
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        refreshDataClockAsync = new RefreshDataClockAsync(this);
         return view;
     }
 
@@ -59,16 +92,34 @@ public class FindPublicTransportFragment extends Fragment {
             return true;
         }
         if (id == R.id.refreshDataAction) {
-            refreshData();
+            if(getLocation() != null){
+                startRefreshDataProcedure();
+            } else {
+                Toast.makeText(getActivity(), R.string.refresh_data_no_GPS, Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void refreshData() {
+    public void startRefreshDataProcedure() {
         setRefreshActionButtonState(isRefreshingData = true);
-        opis.setText("cycki");
         Toast.makeText(getActivity(), R.string.refresh_data_alert, Toast.LENGTH_SHORT).show();
+
+        //new ConnectionToServerAsync(this);
+        new TestConnectionToServerAsync(this);
+    }
+
+    public void refreshGUIWithReceivedDataProcedure(JSONObject jsonObject) {
+        setRefreshActionButtonState(isRefreshingData = false);
+        timeStampSinceLastUpdate = System.currentTimeMillis();
+        if(jsonObject != null){
+            Log.e("sukces",jsonObject.toString());
+        }
+    }
+
+    public boolean isTimeForRefreshData(){
+        return System.currentTimeMillis() - timeStampSinceLastUpdate>9000;
     }
 
     public void setRefreshActionButtonState(final boolean refreshing) {
@@ -82,5 +133,59 @@ public class FindPublicTransportFragment extends Fragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopLocationUpdates();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            startLocationUpdates();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+
+    }
+
+    private void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public long getTimeStampSinceLastUpdate() {
+        return timeStampSinceLastUpdate;
     }
 }

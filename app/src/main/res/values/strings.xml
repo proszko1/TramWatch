@@ -12,6 +12,9 @@
     <string name="find_public_transport_title">Odjazdy</string>
     <string name="refresh_data_action_description">Odswież dane</string>
     <string name="refresh_data_alert">Odświeżanie danych...</string>
+    <string name="refresh_data_no_GPS">Brak informacji o lokalizacji</string>
+    <string name="connection_with_server_error">Błąd połączenia</string>
+
 
     <string name="action_settings">Settings</string>
 </resources>

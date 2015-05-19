@@ -1,5 +1,6 @@
 package ute15l.tramwatch;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -22,6 +23,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -61,12 +65,27 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private FindPublicTransportFragment findPublicTransportFragment;
+    private AboutFragment aboutFragment;
+    private AddNotificationsFragment addNotificationsFragment;
+    private List<Fragment> fragmentsList = new ArrayList<Fragment>();
+
     public NavigationDrawerFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fragmentsList.add(findPublicTransportFragment = new FindPublicTransportFragment());
+        fragmentsList.add(addNotificationsFragment = new AddNotificationsFragment());
+        fragmentsList.add(aboutFragment = new AboutFragment());
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.container, fragmentsList.get(0))
+                .add(R.id.container, fragmentsList.get(1))
+                .add(R.id.container, fragmentsList.get(2))
+                .commit();
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
@@ -269,6 +288,23 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
+
+    public FindPublicTransportFragment getFindPublicTransportFragment() {
+        return findPublicTransportFragment;
+    }
+
+    public AboutFragment getAboutFragment() {
+        return aboutFragment;
+    }
+
+    public AddNotificationsFragment getAddNotificationsFragment() {
+        return addNotificationsFragment;
+    }
+
+    public Fragment getSelectedFragment(int selectedPositionInDrawer){
+        return fragmentsList.get(selectedPositionInDrawer);
+    }
+
 
     /**
      * Callbacks interface that all activities using this fragment must implement.

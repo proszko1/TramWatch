@@ -12,7 +12,6 @@ import org.json.JSONObject;
  */
 public class RefreshDataClockAsync extends AsyncTask<Void, Void, Void> {
 
-    private static final long DEFAULT_REFRESHING_INTEVALS = 10000;
     private long refreshingInterval = 1000;
 
     FindPublicTransportFragment findPublicTransportFragment;
@@ -24,17 +23,19 @@ public class RefreshDataClockAsync extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        while(true){
+        while(!findPublicTransportFragment.isDestroyed()){
             try {
                 if(findPublicTransportFragment.getLocation() != null && findPublicTransportFragment.isTimeForRefreshData()){
-                    refreshingInterval = DEFAULT_REFRESHING_INTEVALS;
+                    refreshingInterval = Constants.DEFAULT_REFRESHING_INTEVALS;
                     publishProgress();
+                    Log.e("sd","dasd");
                 }
                 Thread.sleep(refreshingInterval);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
     @Override

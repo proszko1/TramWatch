@@ -12,7 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, SelectStopsDialogFragment.DialogListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -73,9 +73,11 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDialogSendClick() {
+        navigationDrawerFragment.getFindPublicTransportFragment().stopToSelectDialogConfirmed();
     }
 }

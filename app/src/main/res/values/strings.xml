@@ -15,6 +15,14 @@
     <string name="refresh_data_no_GPS">Brak informacji o lokalizacji</string>
     <string name="connection_with_server_error">Błąd połączenia</string>
 
+    <string name="waiting_for_data_text">Oczekiwanie na dane</string>
+    <string name="no_additional_info_text">Brak dodatkowych informacji</string>
+    <string name="distance_text">Odl. rzecz.:\n</string>
+    <string name="approximate_time_text">Rzecz. czas przyjazdu:\n</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="select_stops">Wybierz wyświetlane przystanki</string>
+    <string name="select_stops_dialog_fragment_text">Wybierz wyświetlane przystanki</string>
+    <string name="select_stops_dialog_fragment_confirm_button_text">Zatwierdź</string>
+    <string name="select_stops_no_stops">Lista przystanków jest pusta</string>
+
 </resources>

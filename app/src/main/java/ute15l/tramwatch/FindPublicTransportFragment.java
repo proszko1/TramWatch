@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,6 +151,21 @@ public class FindPublicTransportFragment extends Fragment implements GoogleApiCl
         List<Stop> selectedStopList = Stop.getCheckedStops(stopList);
         stopExpandableListAdapter = new StopExpandableListAdapter(getActivity(),selectedStopList.toArray(new Stop[selectedStopList.size()]));
         stopExpandableList.setAdapter(stopExpandableListAdapter);
+
+        stopExpandableList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    int childPosition = ExpandableListView.getPackedPositionChild(id);
+                    new SendSmsToFriendDialogFragment(stopList.get(groupPosition),childPosition).show(getFragmentManager(), "SendSmsToFriendDialogFragment");
+                    Toast.makeText(getActivity(), "group :" + groupPosition + childPosition, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         for(int i=0; i < stopExpandableListAdapter.getGroupCount(); i++){
             stopExpandableList.expandGroup(i);
         }

@@ -28,7 +28,6 @@ public class RefreshDataClockAsync extends AsyncTask<Void, Void, Void> {
                 if(findPublicTransportFragment.getLocation() != null && findPublicTransportFragment.isTimeForRefreshData()){
                     refreshingInterval = Constants.DEFAULT_REFRESHING_INTEVALS;
                     publishProgress();
-                    Log.e("sd","dasd");
                 }
                 Thread.sleep(refreshingInterval);
             } catch (InterruptedException e) {

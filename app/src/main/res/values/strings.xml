@@ -25,4 +25,18 @@
     <string name="select_stops_dialog_fragment_confirm_button_text">Zatwierdź</string>
     <string name="select_stops_no_stops">Lista przystanków jest pusta</string>
 
+    <string name="send_sms_to_friend_dialog_fragment_text">Wyślij powiadomienie sms z danymi o odjeździe</string>
+    <string name="send_sms_to_friend_dialog_fragment_confirm_button_text">Zatwierdź</string>
+    <string name="send_sms_to_friend_dialog_fragment_cancel_button_text">Anuluj</string>
+    <string name="send_sms_to_friend_your_name">Podaj swoje imię:</string>
+    <string name="send_sms_to_friend_name">Podaj imię znajomego:</string>
+    <string name="send_sms_to_friend_nr">Nr:</string>
+    <string name="send_sms_to_friend_our_nr">48789102195</string>
+    <string name="send_sms_to_friend_not_filled">Nie wypełniono wszystkich pól obowiązkowych</string>
+
+    <string name="send_sms_to_friend_sending">Wysyłanie...</string>
+    <string name="send_sms_to_friend_sending_success">Wysłano!</string>
+    <string name="send_sms_to_friend_sending_fail">Błąd połączenia z usługą</string>
+
+
 </resources>
